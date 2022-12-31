@@ -26,10 +26,16 @@ set (SOURCES
 )
 
 set(STRING_ENCODING_TYPE "ICONV" CACHE STRING "Set the way strings have to be encoded (ICONV|NONE|...)")
+set(KS_STATIC_LIB "ON" CACHE BOOL "Set if the library should be static (default) or shared object")
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-add_library (${PROJECT_NAME} SHARED ${HEADERS} ${SOURCES})
+if (KS_STATIC_LIB)
+    set(KS_LIB_TYPE STATIC)
+else()
+    set(KS_LIB_TYPE SHARED)
+endif()
+add_library (${PROJECT_NAME} ${KS_LIB_TYPE} ${HEADERS} ${SOURCES})
 set_property(TARGET ${PROJECT_NAME} PROPERTY PUBLIC_HEADER ${HEADERS})
 
 if (ZLIB_FOUND)
