@@ -1,5 +1,6 @@
-project (kaitai_struct_cpp_stl_runtime CXX)
 cmake_minimum_required (VERSION 3.3)
+project (kaitai_struct_cpp_stl_runtime CXX)
+enable_testing()
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -25,7 +26,7 @@ set (SOURCES
     kaitai/kaitaistream.cpp
 )
 
-set(STRING_ENCODING_TYPE "ICONV" CACHE STRING "Set the way strings have to be encoded (ICONV|NONE|...)")
+set(STRING_ENCODING_TYPE "ICONV" CACHE STRING "Set the way strings have to be encoded (ICONV|WIN32API|NONE|...)")
 set(KS_STATIC_LIB "ON" CACHE BOOL "Set if the library should be static (default) or shared object")
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -49,13 +50,7 @@ if(ICONV_FOUND)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${ICONV_LIBRARIES})
 endif()
 
-if (STRING_ENCODING_TYPE STREQUAL "ICONV")
-    target_compile_definitions(${PROJECT_NAME} PRIVATE -DKS_STR_ENCODING_ICONV)
-elseif (STRING_ENCODING_TYPE STREQUAL "NONE")
-    target_compile_definitions(${PROJECT_NAME} PRIVATE -DKS_STR_ENCODING_NONE)
-else()
-    # User action requested
-endif()
+include(Common.cmake)
 
 install(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION lib
@@ -63,3 +58,6 @@ install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION bin
     PUBLIC_HEADER DESTINATION include/kaitai
 )
+
+# Add the tests
+add_subdirectory(tests)
