@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 namespace testing {
     struct TestInfo {
@@ -16,6 +17,11 @@ namespace testing {
     bool g_allPass;
 
     void InitGoogleTest(int *argc, char **argv) {
+        // Avoid warnings on unused arguments: we don't have implementation for parsing command line
+        // right now, but we might implement it in future.
+        (void) argc;
+        (void) argv;
+
         std::cout << "[----------] gtest-nano: starting up\n";
     }
 
@@ -62,5 +68,21 @@ namespace testing {
             ::testing::g_testPass = false;        \
         }                                         \
     } while (false)
+
+// Floating point comparison macro
+#define EXPECT_FLOAT_EQ(a, b)                     \
+    do {                                          \
+        if (fabs(a - b) < 1e-6) {                 \
+        } else {                                  \
+            ::testing::g_testPass = false;        \
+        }                                         \
+    } while (false)
+
+#define EXPECT_DOUBLE_EQ(a, b) EXPECT_FLOAT_EQ(a, b)
+
+// Failure macro
+#define FAIL()                     \
+    ::testing::g_testPass = false; \
+    std::cerr
 
 #define RUN_ALL_TESTS() ::testing::runAllTests()
