@@ -6,7 +6,7 @@ add_executable(unittest unittest.cpp)
 
 include(../Common.cmake)
 
-target_include_directories(unittest PRIVATE ${CMAKE_SOURCE_DIR})
+target_include_directories(unittest PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 # Link the test executable with the main library and the test framework/library
 target_link_libraries(unittest PRIVATE kaitai_struct_cpp_stl_runtime GTest::GTest GTest::Main)
