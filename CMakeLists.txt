@@ -29,6 +29,7 @@ else()
 endif()
 add_library (${PROJECT_NAME} ${KS_LIB_TYPE} ${HEADERS} ${SOURCES})
 set_property(TARGET ${PROJECT_NAME} PROPERTY PUBLIC_HEADER ${HEADERS})
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
 if (ZLIB_FOUND)
     target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
